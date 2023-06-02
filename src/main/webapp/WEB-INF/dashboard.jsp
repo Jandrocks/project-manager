@@ -40,34 +40,45 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${ todos_proyectos }" var="proyecto">
+				<c:forEach items="${ noasignados }" var="proyecto">
 					<tr>
-						<td><a href="/project/${ proyecto.id }">${ proyecto.titulo }</a></td>
+						<c:if test="${proyecto.lider.id != usuario.id }">
+						<td><a href="/projects/${ proyecto.id }">${ proyecto.titulo }</a></td>
 						<td>${ proyecto.lider.nombre }</td>
 						<td><fmt:formatDate value="${proyecto.fechaEvento}"
 								pattern="MMMM dd" var="fechaEvento" /> <c:out
 								value="${fechaEvento}"></c:out></td>
-						<td><c:choose>
-								<c:when test="${ proyecto.lider.id == usuario.id }">
-									<a href="/projects/edit/${ proyecto.id }">Edit</a> |
-									<form class="delete-form" action="/events/${ proyecto.id }"
-										method="post">
-										<input type="hidden" name="_method" value="delete" />
-										<button>Borrar</button>
-									</form>
-								</c:when>
-								<c:otherwise>
-									<%-- 							<c:choose>
-										<c:when test="${ proyecto.asistentes.contains(usuario) }">Join Team 
-											<a href="/event/${ proyecto.id }/${usuario.id }/cancel"> Leave Team</a>
-										</c:when>
-										<c:otherwise>
-											Leave Team <a href="/event/${ proyecto.id }/${usuario.id }/unirse">Join Team</a>
-										</c:otherwise>
+						<td>
+						<a href="/project/${ proyecto.id }/${usuario.id }/join">Join Team</a>
+						</td>
+						</c:if>
+						
+						
+<%-- 						<c:choose> --%>
+<%-- 								<c:when test="${ proyecto.lider.id == usuario.id }"> --%>
+<%-- 									<a href="/projects/edit/${ proyecto.id }">Edit</a> | --%>
+<%-- 									<form class="delete-form" action="/events/${ proyecto.id }" --%>
+<%-- 										method="post"> --%>
+<!-- 										<input type="hidden" name="_method" value="delete" /> -->
+<!-- 										<button>Borrar</button> -->
+<%-- 									</form> --%>
+<%-- 								</c:when> --%>
+<%-- 								<c:otherwise> --%>
+<%-- 									<c:choose> --%>
+<%-- 										<c:when test="${ proyecto.compas.contains(usuario) }"> --%>
+<%-- 											<a href="/project/${ proyecto.id }/${usuario.id }/cancel"> --%>
+<!-- 												Leave Team</a> -->
+<%-- 										</c:when> --%>
 
-									</c:choose> --%>
-								</c:otherwise>
-							</c:choose></td>
+<%-- 										<c:otherwise> --%>
+<%-- 											<a href="/project/${ proyecto.id }/${usuario.id }/join"> --%>
+<!-- 												Team</a> -->
+<%-- 										</c:otherwise> --%>
+
+<%-- 									</c:choose> --%>
+<%-- 								</c:otherwise> --%>
+<%-- 							</c:choose> --%>
+							
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -85,31 +96,24 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${ proyectos_lider }" var="proyecto">
+				<c:forEach items="${ proyectos_asignados }" var="proyecto">
 					<tr>
 						<td><a href="/projects/${ proyecto.id }">${ proyecto.titulo }</a></td>
-						<td><fmt:formatDate value="${proyecto.fechaEvento}"
-								pattern="MMMM dd, yyyy" var="fechaEvento" />
-							${fechaEvento}</td>
 						<td>${ proyecto.lider.nombre }</td>
+						<td><fmt:formatDate value="${proyecto.fechaEvento}"
+								pattern="MMMM dd, yyyy" var="fechaEvento" /> ${fechaEvento}</td>
 						<td><c:choose>
 								<c:when test="${ proyecto.lider.id == usuario.id }">
 									<a href="/projects/edit/${ proyecto.id }">Edit</a> | 
- 									<form class="delete-form" action="/events/${ proyecto.id }"
-										method="post">
-										<input type="hidden" name="_method" value="delete" />
-										<button>Borrar</button>
-									</form>
+ 									
 								</c:when>
 								<c:otherwise>
 									<c:choose>
-										<c:when test="${ proyecto.asistentes.contains(usuario) }">Unirse 
-											<a href="/event/${ proyecto.id }/${usuario.id }/cancel">
-												Cancelar</a>
+										<c:when test="${ proyecto.lider.id != usuario.id }"> 
+											<a href="/project/${ proyecto.id }/${usuario.id }/cancel">
+												Leave Team</a>
 										</c:when>
 										<c:otherwise>
-											Cancelar <a
-												href="/event/${ proyecto.id }/${usuario.id }/unirse">Unirse</a>
 										</c:otherwise>
 
 									</c:choose>
